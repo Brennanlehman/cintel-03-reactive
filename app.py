@@ -82,9 +82,10 @@ with ui.card(full_screen=True):  # Full screen option
 # Use ui.hr() to add a horizontal rule to the sidebar
 ui.hr()
 
-# Displaying Plotly Histogram
-with ui.card(full_screen=True):  # Full screen option
-        ui.card_header("Plotly Histogram")
+ui.page_opts(fillable=False)
+
+with ui.navset_card_tab():  
+    with ui.nav_panel("Plotly Histogram"):
         @render_plotly
         def render_plotly_histogram():
             # Create a Plotly histogram
@@ -96,8 +97,7 @@ with ui.card(full_screen=True):  # Full screen option
             )
             return fig
 
-# Displaying Seaborn Histogram
-with ui.card(full_screen=True):  # Full screen option
+    with ui.nav_panel("Seaborn Histogram"):
         @render.plot(alt="A Seaborn histogram on penguin species by island.")
         def plot(): 
             ax = sns.histplot(filtered_data(), x="island", y="species") 
@@ -106,9 +106,8 @@ with ui.card(full_screen=True):  # Full screen option
             ax.set_ylabel("Species")
             return ax 
 
-# Display Plotly Scatter plot
-with ui.card(full_screen=True):  # Full screen option
-        ui.card_header("Plotly Scatterplot: Species")
+
+    with ui.nav_panel("Plotly Scatterplot: Species"):
         @render_plotly
         def plotly_scatterplot():
         # Create a Plotly scatterplot using Plotly Express
