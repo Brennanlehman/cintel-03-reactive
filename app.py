@@ -1,29 +1,33 @@
 import plotly.express as px
-from shiny.express import input, ui
-from shinywidgets import render_plotly
-from palmerpenguins import load_penguins
-from shiny import render
-from shinywidgets import render_plotly, render_widget
 import pandas as pd
 import seaborn as sns
 import plotly.graph_objects as go
-from shiny import reactive, render, req
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
-from shiny.express import render
+from shiny.express import input, ui, render
+from shinywidgets import render_plotly, render_widget
+from palmerpenguins import load_penguins
+from shiny import reactive, render, req
 
 # Use the built-in function to load the Palmer Penguins dataset
 penguins_df = load_penguins()
 
 ui.page_opts(title="Penguin Data Blehman", fillable=True)
+
 @render_plotly
 def plot1():
-    return px.histogram(penguins_df, y="bill_length_mm")
+    return px.histogram(
+        penguins_df, 
+        y="bill_length_mm"
+    )
 
 @render_plotly
 def plot2():
-    return px.histogram(penguins_df, y="flipper_length_mm")
+    return px.histogram(
+        penguins_df, 
+        y="flipper_length_mm"
+    )
 
 with ui.sidebar(open="open"):
     ui.h2("Sidebar")
@@ -33,13 +37,8 @@ with ui.sidebar(open="open"):
         ["bill_length_mm", "flipper_length_mm", "body_mass_g"],
     )
 
-
     # Use ui.input_numeric() to create a numeric input for the number of Plotly histogram bins
     ui.input_numeric("plotly_bin_count", "Bin Counts", 1, min=1, max=10)  
-
-    @render.text
-    def value():
-        return input.numeric()
 
     # Use ui.input_slider() to create a slider input for the number of Seaborn bins
     ui.input_slider("seaborn_bin_count", "Seaborn Bin Count", 1, 80, 40)
@@ -53,18 +52,8 @@ with ui.sidebar(open="open"):
         inline=True,
     )
 
-        # Displaying Seaborn Histogram
-    penguins = load_penguins()
-    with ui.card(full_screen=True):  # Full screen option
-        @render.plot(alt="A Seaborn histogram on penguin body mass in grams.")  # <<
-        def plot():  # <<
-            ax = sns.histplot(data=penguins, x="species")  # <<
-            ax.set_title("Seaborn Palmer Penguins")
-            ax.set_xlabel("species")
-            ax.set_ylabel("Count")
-            return ax  # <<
-    # Use ui.hr() to add a horizontal rule to the sidebar
-    ui.hr()
+# Use ui.hr() to add a horizontal rule to the sidebar
+ui.hr()
 
 # Use ui.a() to add a hyperlink to the sidebar
 ui.a(
@@ -74,9 +63,6 @@ ui.a(
     )
 
 # Main content
-
-# Load the Palmer Penguins dataset
-penguins_df = load_penguins()
 
 # Define UI
 # Displaying Data Table
@@ -96,16 +82,29 @@ with ui.card(full_screen=True):  # Full screen option
 # Use ui.hr() to add a horizontal rule to the sidebar
 ui.hr()
 
-
-
 # Displaying Plotly Histogram
 with ui.card(full_screen=True):  # Full screen option
         ui.card_header("Plotly Histogram")
         @render_plotly
         def render_plotly_histogram():
             # Create a Plotly histogram
-            fig = px.histogram(penguins_df, x="body_mass_g", color="species", title="Palmer Penguins")
+            fig = px.histogram(
+                penguins_df, 
+                x="flipper_length_mm", 
+                color="species", 
+                title="Palmer Penguins"
+            )
             return fig
+
+# Displaying Seaborn Histogram
+with ui.card(full_screen=True):  # Full screen option
+        @render.plot(alt="A Seaborn histogram on penguin species by island.")
+        def plot(): 
+            ax = sns.histplot(data=penguins_df, x="island", y="species") 
+            ax.set_title("Seaborn Palmer Penguins")
+            ax.set_xlabel("Island")
+            ax.set_ylabel("Species")
+            return ax 
 
 # Display Plotly Scatter plot
 with ui.card(full_screen=True):  # Full screen option
@@ -120,13 +119,13 @@ with ui.card(full_screen=True):  # Full screen option
 ui.hr()
 
 # Map Widget
-from ipyleaflet import Map  # <<
+from ipyleaflet import Map
 from shiny.express import ui
-from shinywidgets import render_widget  # <<
+from shinywidgets import render_widget 
 
 ui.h2("Map")
 
 
-@render_widget  # <<
+@render_widget
 def map():
-    return Map(center=(50.6252978589571, 0.34580993652344), zoom=3)  # <<
+    return Map(center=(50.6252978589571, 0.34580993652344), zoom=3)
