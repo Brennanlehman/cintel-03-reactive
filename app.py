@@ -91,8 +91,8 @@ with ui.navset_card_tab():
             # Create a Plotly histogram
             fig = px.histogram(
                 filtered_data(), 
-                x="flipper_length_mm", 
-                color="species", 
+                x="species", 
+                color="island", 
                 title="Palmer Penguins"
             )
             return fig
@@ -149,4 +149,4 @@ def map():
 
 @reactive.calc
 def filtered_data():
-    return penguins_df
+    return penguins_df[penguins_df["species"].isin(input.selected_species_list())]
