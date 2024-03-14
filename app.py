@@ -129,3 +129,17 @@ ui.h2("Map")
 @render_widget
 def map():
     return Map(center=(50.6252978589571, 0.34580993652344), zoom=3)
+
+# --------------------------------------------------------
+# Reactive calculations and effects
+# --------------------------------------------------------
+
+# Add a reactive calculation to filter the data
+# By decorating the function with @reactive, we can use the function to filter the data
+# The function will be called whenever an input functions used to generate that output changes.
+# Any output that depends on the reactive function (e.g., filtered_data()) will be updated when the data changes.
+
+@reactive.calc
+def filtered_data():
+    isSpeciesMatch = penguins_df["species"].isin(input.selected_species_list())
+    return penguins_df[isSpeciesMatch]
