@@ -18,14 +18,14 @@ ui.page_opts(title="Penguin Data Blehman", fillable=True)
 @render_plotly
 def plot1():
     return px.histogram(
-        penguins_df, 
+        filtered_data(), 
         y="bill_length_mm"
     )
 
 @render_plotly
 def plot2():
     return px.histogram(
-        penguins_df, 
+        filtered_data(), 
         y="flipper_length_mm"
     )
 
@@ -70,14 +70,14 @@ with ui.card(full_screen=True):
         ui.card_header("Penguins Data Table")
         @render.data_frame
         def render_penguins_table():
-            return penguins_df
+            return filtered_data()
 
 # Displaying Data Grid
 with ui.card(full_screen=True):  # Full screen option
         ui.card_header("Penguins Data Grid")
         @render.data_frame
         def render_penguins_grid():
-            return penguins_df
+            return filtered_data()
 
 # Use ui.hr() to add a horizontal rule to the sidebar
 ui.hr()
@@ -89,7 +89,7 @@ with ui.card(full_screen=True):  # Full screen option
         def render_plotly_histogram():
             # Create a Plotly histogram
             fig = px.histogram(
-                penguins_df, 
+                filtered_data(), 
                 x="flipper_length_mm", 
                 color="species", 
                 title="Palmer Penguins"
@@ -100,7 +100,7 @@ with ui.card(full_screen=True):  # Full screen option
 with ui.card(full_screen=True):  # Full screen option
         @render.plot(alt="A Seaborn histogram on penguin species by island.")
         def plot(): 
-            ax = sns.histplot(data=penguins_df, x="island", y="species") 
+            ax = sns.histplot(filtered_data(), x="island", y="species") 
             ax.set_title("Seaborn Palmer Penguins")
             ax.set_xlabel("Island")
             ax.set_ylabel("Species")
@@ -112,7 +112,7 @@ with ui.card(full_screen=True):  # Full screen option
         @render_plotly
         def plotly_scatterplot():
         # Create a Plotly scatterplot using Plotly Express
-            return px.scatter(penguins_df, x="body_mass_g", y="year", color="species", 
+            return px.scatter(filtered_data(), x="body_mass_g", y="year", color="species", 
                           facet_row="species", facet_col="sex", title="Penguin Scatterplot", labels={"body_mass_g": "Body Mass g", "year": "Year"})
 
 # Use ui.hr() to add a horizontal rule to the sidebar
