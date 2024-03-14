@@ -52,6 +52,17 @@ with ui.sidebar(open="open"):
         inline=True,
     )
 
+    # TESTING TESTING TESTing
+        # Use ui.input_checkbox_group() to create a checkbox group input to filter the islands
+    ui.input_checkbox_group(  
+        "penguin_islands",
+        "Islands",
+        ["Torgersen", "Biscoe", "Dream"],
+        selected=["Dream"],
+        inline=True,
+    )
+
+
 # Use ui.hr() to add a horizontal rule to the sidebar
 ui.hr()
 
@@ -149,4 +160,6 @@ def map():
 
 @reactive.calc
 def filtered_data():
-    return penguins_df[penguins_df["species"].isin(input.selected_species_list())]
+    return penguins_df[
+        (penguins_df["species"].isin(input.selected_species_list())) &
+        (penguins_df["island"].isin(input.penguin_islands()))]
